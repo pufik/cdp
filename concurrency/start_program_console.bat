@@ -1,0 +1,1 @@
+START /MAX java -Xmx64m -jar target/concurrency-0.0.1-SNAPSHOT.jar

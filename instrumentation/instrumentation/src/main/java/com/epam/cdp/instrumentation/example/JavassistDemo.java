@@ -18,6 +18,6 @@ public class JavassistDemo {
 
 	private void d() throws InterruptedException {
 		Thread.sleep(1000);
-		//throw new RuntimeException("Time should be printed event after exception");
+		throw new RuntimeException("Time should be printed event after exception");
 	}
 }

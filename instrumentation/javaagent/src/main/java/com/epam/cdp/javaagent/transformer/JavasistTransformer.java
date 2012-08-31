@@ -11,6 +11,8 @@ import javassist.CtMethod;
 
 public class JavasistTransformer implements ClassFileTransformer {
 
+	private static final String LOCAL_DATE_CLASS = "java.util.Date";
+	private static final String CATCH_EXCEPTION_CLASS = "java.lang.Exception";
 	private static final String START_INVOKE_TIME = "startTime";
 	private static final String CLASS_FILTER = "com/epam/cdp/instrumentation";
 
@@ -36,11 +38,13 @@ public class JavasistTransformer implements ClassFileTransformer {
 	}
 
 	private void insertCode(CtClass clazz, ClassPool classPool) throws Exception {
-		CtClass dateClass = classPool.get("java.util.Date");
-
+		CtClass dateClass = classPool.get(LOCAL_DATE_CLASS);
+		CtClass exceptionClass = classPool.get(CATCH_EXCEPTION_CLASS);
+		
 		CtMethod[] methods = clazz.getDeclaredMethods();
 		for (CtMethod method : methods) {
 			method.addLocalVariable(START_INVOKE_TIME, dateClass);
+			method.addCatch("{ System.out.println($e); return; }", exceptionClass);
 			method.insertBefore(insertBefore(method));
 			method.insertAfter(insertAfter());
 		}

@@ -4,11 +4,12 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-import com.epam.cdp.jndi.rmi.calculator.CalculateCallback;
 import com.epam.cdp.jndi.rmi.calculator.Calculator;
 import com.epam.cdp.jndi.rmi.calculator.Task;
+import com.epam.cdp.jndi.rmi.callback.CalculateCallback;
 import com.epam.cdp.jndi.rmi.callback.Callback;
 
 public class ClientApplication {
@@ -20,6 +21,7 @@ public class ClientApplication {
 		try {
 			registry = LocateRegistry.getRegistry(null, 1010);
 			Calculator calculator = (Calculator) registry.lookup(Calculator.REGISTRY_NAME);
+			callback = (Callback) UnicastRemoteObject.exportObject(callback, 0);
 			calculator.registerCallBack(callback);
 
 			Task task = new Task();
@@ -36,6 +38,5 @@ public class ClientApplication {
 		} finally {
 			scanner.close();
 		}
-
 	}
 }

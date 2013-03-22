@@ -1,5 +1,8 @@
 package com.epam.cdp.jndi.rmi.callback;
 
-public interface Callback {
-	void callback();
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface Callback extends Remote {
+	void callback() throws RemoteException;
 }

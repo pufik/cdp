@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Console is set to be a ConsoleAppender -->
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p] [%t]: |%d| %C{6} (%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- Log all logs to a separate log file every day -->
+	<appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="logs/cdp.log" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p] [%t]: |%d| %C{6} (%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- Log all logs to SyslogSever -->
+	<appender name="syslogAppander" class="org.apache.log4j.net.SyslogAppender">
+		<param name="Threshold" value="INFO" />
+		<param name="Facility" value="LOCAL0" />
+		<param name="SyslogHost" value="127.0.0.1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p] [%t]: |%d| %C{6} (%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- LOGGER LIST -->
+	<logger name="com.epam.cdp.logging">
+		<!-- level info logs -->
+		<level value="INFO" />
+		<appender-ref ref="fileAppender" />
+	</logger>
+
+	<root>
+		<priority value="INFO"></priority>
+		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="fileAppender" />
+		<appender-ref ref="syslogAppander" />
+	</root>
+
+</log4j:configuration>
